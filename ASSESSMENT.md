@@ -1,4 +1,4 @@
-# **SWO3-Übungen - WS2023/24 - Übungszettel x - Deckblatt**
+# **SWE4-Übungen - SS2024 - Übungszettel x - Deckblatt**
 
 Nachname und Vorname: Sorglos Susi
 
