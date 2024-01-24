@@ -1,4 +1,4 @@
-x# **SWE4-Übungen - SS2024 - Übungszettel 1**
+# **SWE4-Übungen - SS2024 - Übungszettel 1**
 
 ## **MiniBreakout (`src/breakout`)**
 
@@ -12,7 +12,7 @@ Mit Fortdauer des Spiels steigert sich der Schwierigkeitsgrad, da die
 Geschwindigkeit des Balls zunimmt.
 
 <div align="center">
-    <img src="./doc/breakout.png">
+  <img src="./doc/breakout.png">
 </div>
 
 Ihre Aufgabe ist es nun, unter *möglichst weitreichendem Einsatz* der MiniLib
