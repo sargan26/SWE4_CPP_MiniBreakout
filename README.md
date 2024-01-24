@@ -1,4 +1,4 @@
-# **SWO3-Übungen - WS2023/24 - Übungszettel x**
+# **SWE4-Übungen - SS2024 - Übungszettel x**
 
 ## **Beispiel 1: Titel**
 
