@@ -1,4 +1,4 @@
-# **SWE4-Übungen - SS2024 - Übungszettel x - Deckblatt**
+# **SWE4-Übungen - SS2024 - Übungszettel 1 - Deckblatt**
 
 Nachname und Vorname: Sorglos Susi
 
