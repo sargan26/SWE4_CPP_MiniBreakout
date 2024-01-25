@@ -16,7 +16,7 @@ Geschwindigkeit des Balls zunimmt.
 </div>
 
 Ihre Aufgabe ist es nun, unter *möglichst weitreichendem Einsatz* der MiniLib
-(Grafikklassen, Be-hälterbibliothek) einen einfachen Breakout-Klon zu
+(Grafikklassen, Behälterbibliothek) einen einfachen Breakout-Klon zu
 entwickeln, der zumindest folgende Anforderungen erfüllt: 
 
 *	Der Spielende kann den Schläger mit Maus und Tastatur bewegen. 
@@ -62,3 +62,26 @@ kann mehrere Leben haben. Ziegel können mit Spezialeffekten ausgestattet werden
 Joker mit Bonuspunkten, Verdoppelung der Punkte über eine gewisse Zeitspanne
 hinweg, Erzeugung zusätzlicher Bälle, die zusätzlich ins Spiel gebracht werden
 etc.
+
+### Integration der *Minilib*
+
+* Kopieren Sie die den Übungen verwendeten Verzeichnisse `ml5` und `vcpkg` in
+das Wurzelvereichnis Ihrer Lösung. Die Verzeichnisstruktur sollte folgendermaßen
+aussehen:
+
+  ```
+  |--src/
+  |  |--breakout/
+  |  |  |--src/
+  |  |--CmakeLists.txt
+  |--ml5/
+  |--vcpgk
+  |--run-cmake.bat
+  ```
+
+* Erzeugen Sie die Build-Dateien mit `run-cmake.bat`.
+* Sollten sich die Verzeichnisse `ml5` und `vcpkg` an einer anderen Stelle
+  befinden, können Sie die entsprechenden Pfade mit den Umgebungsvariablen
+  `%MINILIB_DIR%` und `%MINILIB_VCPKG_DIR%` definieren. Das wird Ihnen unter
+  Umständen beim Erstellen der Review hilfreich sein.
+* Checken Sie *keinesfalls* die Verzeichnisse `ml5` und `vcpkg` ein!
