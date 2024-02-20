@@ -25,7 +25,6 @@
 #define COLUMNS 4
 #define TOP_OFFSET 60
 #define BALL_RADIUS 6
-#define GAME_SPEED 12 // niedriger Wert = schneller
 
 
 struct shape : ml5::object {
@@ -129,10 +128,14 @@ private:
         wxBrush brush{ *wxGREEN_BRUSH };
         std::unique_ptr<paddle> game_paddle;
         std::unique_ptr<ball> game_ball;
-        int speed = -1;
-        int deltaX = speed;
-        int deltaY = speed;
-        int score = 0;
+        int speed = -2; // Allgemeine Ballgeschwindigkeit
+        int deltaX = speed; // Ballgeschwindigkeit in X
+        int deltaY = speed; // Ballgeschwindigkeit in Y
+        int score = 0; // Punktestand
+        int game_speed = 24; // Timer Spielgeschwindigkeit, Niedriger = Schneller
+        int speedIncreaseTimer = 0; // Zähler für die Zeitspanne, nach der die Geschwindigkeit erhöht wird
+        int speedIncreaseInterval = 5000; // Intervall in Millisekunden, nach dem die Geschwindigkeit erhöht wird
+        float speedMultiplier = 1.05; // Faktor, um den die Geschwindigkeit erhöht wird
 
         void on_init() override {
             // Init paddle in the middle
@@ -147,15 +150,15 @@ private:
                     wxBrush brickBrush = *wxRED_BRUSH; // Standardfarbe
 
                     // Verschiedene Farben und Punkte für die Bricks
-                    if (i < 2) {
+                    if (i < 1) {
                         points = 50;
                         brickBrush = *wxGREEN_BRUSH;
                     }
-                    else if (i < 4) {
+                    else if (i < 2) {
                         points = 30;
                         brickBrush = *wxYELLOW_BRUSH;
                     }
-                    else if (i < 6) {
+                    else if (i < 3) {
                         points = 20;
                         brickBrush = *wxBLUE_BRUSH;
                     }
@@ -169,50 +172,38 @@ private:
                 }
             }
 
-            add_menu("&Shape", {
-                {"&Line", "The next shape will be a line."},
-                {"&Rectangle", "The next shape will be a rectangle."},
-                {"&Ellipse", "The next shape will be a ellipse."},
+            add_menu("&Ball_speed", {
+                {"&Slow", "Set initial ball speed to slow."},
+                {"&Medium", "Set initial ball speed to medium."},
+                {"&High", "Set initial ball speed to high."},
                 });
-            add_menu("&Brush", {
-                {"&Red", "The new brush is red."},
-                {"&Blue", "The new brush is blue."},
-                {"&Green", "The new brush is green."},
-                {"Blac&k", "The new brush is black."},
-                });
-            add_menu("&Pen", {
-                {"&Red", "The new pen is red."},
-                {"&Blue", "The new pen is blue."},
-                {"&Green", "The new pen is green."},
-                {"Blac&k", "The new pen is black."},
-                });
-            add_menu("Back&ground", {
-                {"&White", "Draw white background"},
-                {"&Black", "Draw black background"},
-                });
-            start_timer(std::chrono::milliseconds(GAME_SPEED));
+            start_timer(std::chrono::milliseconds(game_speed));
         }
 
         void on_menu(const ml5::menu_event& event) override {
             const auto title{ event.get_title() };
             const auto item{ event.get_item() };
 
-            if (title == "Background") {
-                if (item == "White") set_prop_background_brush(*wxWHITE_BRUSH);
-                else if (item == "Black") set_prop_background_brush(*wxBLACK_BRUSH);
-                refresh(); 
-            }
-            else if (title == "Brush") {
-                if (item == "Red") brush = *wxRED_BRUSH;
-                else if (item == "Green") brush = *wxGREEN_BRUSH;
-                else if (item == "Blue") brush = *wxBLUE_BRUSH;
-                else if (item == "Black") brush = *wxBLACK_BRUSH;
-            }
-            else if (title == "Pen") {
-                if (item == "Red") pen = *wxRED_PEN;
-                else if (item == "Green") pen = *wxGREEN_PEN;
-                else if (item == "Blue") pen = *wxBLUE_PEN;
-                else if (item == "Black") pen = *wxBLACK_PEN;
+            if (title == "Ball_speed") {
+                if (item == "Slow") {
+                    speed = -1; // Langsamere Geschwindigkeit
+                    deltaX = speed; 
+                    deltaY = speed;
+                    std::cout << "slow";
+                }
+                else if (item == "Medium") {
+                    speed = -2; // Mittlere Geschwindigkeit
+                    deltaX = speed; 
+                    deltaY = speed;
+                    std::cout << "medium";
+                }
+                else if (item == "High") {
+                    speed = -4; // Höhere Geschwindigkeit
+                    deltaX = speed; 
+                    deltaY = speed;
+                }
+                // Setze den Ball auf die Ausgangsposition zurück und beginne das Spiel neu
+                game_ball->SetAABB(wxRect(WINDOW_WIDTH / 2 - BALL_RADIUS, WINDOW_HEIGHT - 80, BALL_RADIUS * 2, BALL_RADIUS * 2));
             }
         }
 
@@ -222,6 +213,16 @@ private:
         */
 
         void on_timer(const ml5::timer_event& event) override {
+            // Erhöhe den Timer
+            speedIncreaseTimer += game_speed;
+
+            // Prüfe, ob das Intervall erreicht ist
+            if (speedIncreaseTimer >= speedIncreaseInterval) {
+                speedIncreaseTimer = 0; 
+                deltaX *= speedMultiplier; 
+                deltaY *= speedMultiplier;
+            }
+            
             // Bewege den Ball um die delta-Werte
             game_ball->move(wxPoint(deltaX, deltaY));
 
@@ -246,7 +247,7 @@ private:
             while (it != bricks.end()) {
                 if (game_ball->GetAABB().Intersects((*it)->GetAABB())) {
                     // Kollision! Füge die Punkte des Bricks hinzu und entferne den getroffenen Ziegel
-                    score += 10;
+                    score += (*it)->points;
                     bricks.remove(*it);
 
                     // Ändere die Bewegungsrichtung des Balls
@@ -338,7 +339,7 @@ private:
                 refresh();
         }
 
-        ml5::vector<std::unique_ptr<shape>> bricks;
+        ml5::vector<std::unique_ptr<brick>> bricks;
     };
 
 };
