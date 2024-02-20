@@ -6,7 +6,7 @@
 
 #### Überblick
 
-Die Implementierung des Breakout-Spiels in C++ unter Verwendung der MiniLib-Bibliothek orientiert sich an den klassischen Spielmechaniken, wobei der Spieler einen Schläger kontrolliert, um einen Ball gegen eine Wand aus Ziegeln (Bricks) zu schlagen. Jeder getroffene Ziegel verschwindet, und der Spieler erhält Punkte. Das Spiel endet, wenn der Ball den unteren Bildschirmrand erreicht.
+Die Implementierung des Breakout-Spiels unter Verwendung der MiniLib-Bibliothek orientiert sich an den klassischen Spielmechaniken, wobei der Spieler einen Schläger kontrolliert, um einen Ball gegen eine Wand aus Ziegeln (Bricks) zu schlagen. Jeder getroffene Ziegel verschwindet, und der Spieler erhält Punkte. Das Spiel endet, wenn der Ball den unteren Bildschirmrand erreicht.
 
 #### Kernkomponenten und Datenstrukturen
 
@@ -30,7 +30,7 @@ Die Implementierung des Breakout-Spiels in C++ unter Verwendung der MiniLib-Bibl
 
 #### Zusammenfassung
 
-Die Implementierung baut auf einer klaren Klassenhierarchie auf, wobei `Shape` als Basisklasse für die Spielobjekte dient und von `Paddle`, `Ball` und `Brick` erweitert wird. Die Spiellogik wird hauptsächlich in der `Window`-Klasse abgewickelt, die für die Verarbeitung von Benutzereingaben, die Aktualisierung des Spielzustands und das Zeichnen des Spiels verantwortlich ist. Die Kollisionserkennung und die daraus resultierende Spiellogik sind zentral für das Spielerlebnis. Durch die schrittweise Erhöhung der Ballgeschwindigkeit wird eine zunehmende Herausforderung und Dynamik ins Spiel gebracht. Abschließend ermöglicht die `gameOver`-Funktion das Ende und den Neustart des Spiels, was zu einem durchdachten und abgeschlossenen Spielerlebnis führt.
+Die Implementierung baut auf einer klaren Klassenhierarchie auf, wobei `Shape` als Basisklasse für die Spielobjekte dient und von `Paddle`, `Ball` und `Brick` erweitert wird. Die Spiellogik wird hauptsächlich in der `Window`-Klasse abgewickelt, die für die Verarbeitung von Benutzereingaben, die Aktualisierung des Spielzustands und das Zeichnen des Spiels verantwortlich ist. Durch die schrittweise Erhöhung der Ballgeschwindigkeit wird eine zunehmende Herausforderung und Dynamik ins Spiel gebracht. Abschließend ermöglicht die `gameOver`-Funktion das Ende und den Neustart des Spiels.
 
 
 ### **Testfälle**
