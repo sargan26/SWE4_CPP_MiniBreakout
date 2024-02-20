@@ -173,45 +173,14 @@ private:
         }
 
         void init_game_paddle() {
-
             game_paddle = std::make_unique<paddle>(wxPoint{ 0,0 }, *wxBLACK_PEN, *wxGREEN_BRUSH);
         }
 
         void on_init() override {
-            // Init paddle in the middle
+            // Init paddle und Ball in der Mitte
             init_game_paddle();
             game_ball = std::make_unique<ball>(wxPoint{ WINDOW_WIDTH / 2 - BALL_RADIUS, WINDOW_HEIGHT - 80 }, *wxBLACK_PEN, *wxBLUE_BRUSH);
             build_bricks(COLUMNS);
-            //int x, y;
-            //for (size_t i = 0; i < COLUMNS; i++) {
-            //    for (size_t j = 0; j < ROWS; j++) {
-            //        x = BRICK_WIDTH * j;
-            //        y = BRICK_HEIGHT * i + TOP_OFFSET;
-            //        int points = 0;
-            //        wxBrush brickBrush = *wxRED_BRUSH; // Standardfarbe
-            //
-            //        // Verschiedene Farben und Punkte für die Bricks
-            //        if (i < 1) {
-            //            points = 50;
-            //            brickBrush = *wxGREEN_BRUSH;
-            //        }
-            //        else if (i < 2) {
-            //            points = 30;
-            //            brickBrush = *wxYELLOW_BRUSH;
-            //        }
-            //        else if (i < 3) {
-            //            points = 20;
-            //            brickBrush = *wxBLUE_BRUSH;
-            //        }
-            //        else {
-            //            points = 10;
-            //            brickBrush = *wxRED_BRUSH;
-            //        }
-            //
-            //        auto new_brick = std::make_unique<brick>(wxPoint{ x, y }, *wxBLACK_PEN, brickBrush, points);
-            //        bricks.add(std::move(new_brick));
-            //    }
-            //}
 
             add_menu("&Ball_speed", {
                 {"&Slow", "Set initial ball speed to slow."},
@@ -403,7 +372,7 @@ private:
         }
 
         void startNewGame() {
-            build_bricks(COLUMNS);
+            build_bricks(COLUMNS); // Init bricks und das paddle
             init_game_paddle();
             refresh(); // Zeichne das Fenster neu, um das Spiel zurückzusetzen
         }
@@ -446,7 +415,6 @@ private:
 
                 refresh();
         }
-
         ml5::vector<std::unique_ptr<brick>> bricks;
     };
 
