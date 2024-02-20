@@ -137,12 +137,10 @@ private:
         int speedIncreaseInterval = 5000; // Intervall in Millisekunden, nach dem die Geschwindigkeit erhöht wird
         float speedMultiplier = 1.05; // Faktor, um den die Geschwindigkeit erhöht wird
 
-        void on_init() override {
-            // Init paddle in the middle
-            game_paddle = std::make_unique<paddle>(wxPoint{ 0,0 }, *wxBLACK_PEN, *wxGREEN_BRUSH);
-            game_ball = std::make_unique<ball>(wxPoint{ WINDOW_WIDTH / 2 - BALL_RADIUS, WINDOW_HEIGHT - 80 }, *wxBLACK_PEN, *wxBLUE_BRUSH);
+        void build_bricks(int columns) {
+            bricks.clear();
             int x, y;
-            for (size_t i = 0; i < COLUMNS; i++) {
+            for (size_t i = 0; i < columns; i++) {
                 for (size_t j = 0; j < ROWS; j++) {
                     x = BRICK_WIDTH * j;
                     y = BRICK_HEIGHT * i + TOP_OFFSET;
@@ -171,11 +169,64 @@ private:
                     bricks.add(std::move(new_brick));
                 }
             }
+            refresh();
+        }
+
+        void init_game_paddle() {
+
+            game_paddle = std::make_unique<paddle>(wxPoint{ 0,0 }, *wxBLACK_PEN, *wxGREEN_BRUSH);
+        }
+
+        void on_init() override {
+            // Init paddle in the middle
+            init_game_paddle();
+            game_ball = std::make_unique<ball>(wxPoint{ WINDOW_WIDTH / 2 - BALL_RADIUS, WINDOW_HEIGHT - 80 }, *wxBLACK_PEN, *wxBLUE_BRUSH);
+            build_bricks(COLUMNS);
+            //int x, y;
+            //for (size_t i = 0; i < COLUMNS; i++) {
+            //    for (size_t j = 0; j < ROWS; j++) {
+            //        x = BRICK_WIDTH * j;
+            //        y = BRICK_HEIGHT * i + TOP_OFFSET;
+            //        int points = 0;
+            //        wxBrush brickBrush = *wxRED_BRUSH; // Standardfarbe
+            //
+            //        // Verschiedene Farben und Punkte für die Bricks
+            //        if (i < 1) {
+            //            points = 50;
+            //            brickBrush = *wxGREEN_BRUSH;
+            //        }
+            //        else if (i < 2) {
+            //            points = 30;
+            //            brickBrush = *wxYELLOW_BRUSH;
+            //        }
+            //        else if (i < 3) {
+            //            points = 20;
+            //            brickBrush = *wxBLUE_BRUSH;
+            //        }
+            //        else {
+            //            points = 10;
+            //            brickBrush = *wxRED_BRUSH;
+            //        }
+            //
+            //        auto new_brick = std::make_unique<brick>(wxPoint{ x, y }, *wxBLACK_PEN, brickBrush, points);
+            //        bricks.add(std::move(new_brick));
+            //    }
+            //}
 
             add_menu("&Ball_speed", {
                 {"&Slow", "Set initial ball speed to slow."},
                 {"&Medium", "Set initial ball speed to medium."},
                 {"&High", "Set initial ball speed to high."},
+                });
+            add_menu("&Paddle_size", {
+                {"&Small", "Set the paddle size to small."},
+                {"&Medium", "Set the paddle size to medium."},
+                {"&Big", "Set the paddle size to big."},
+                });
+            add_menu("B&rick_columns", {
+                {"&4", "Sets the column amount to 4."},
+                {"&6", "Sets the column amount to 6."},
+                {"&8", "Sets the column amount to 8."},
                 });
             start_timer(std::chrono::milliseconds(game_speed));
         }
@@ -189,13 +240,11 @@ private:
                     speed = -1; // Langsamere Geschwindigkeit
                     deltaX = speed; 
                     deltaY = speed;
-                    std::cout << "slow";
                 }
                 else if (item == "Medium") {
                     speed = -2; // Mittlere Geschwindigkeit
                     deltaX = speed; 
                     deltaY = speed;
-                    std::cout << "medium";
                 }
                 else if (item == "High") {
                     speed = -4; // Höhere Geschwindigkeit
@@ -204,6 +253,41 @@ private:
                 }
                 // Setze den Ball auf die Ausgangsposition zurück und beginne das Spiel neu
                 game_ball->SetAABB(wxRect(WINDOW_WIDTH / 2 - BALL_RADIUS, WINDOW_HEIGHT - 80, BALL_RADIUS * 2, BALL_RADIUS * 2));
+            }
+            else if (title == "Paddle_size") {
+                auto paddle_pos = game_paddle->GetAABB();
+                int new_width = PADDLE_WIDTH;
+
+                if (item == "Small") {
+                    new_width = PADDLE_WIDTH / 1.5; // Kleiner Schläger
+                }
+                else if (item == "Medium") {
+                    new_width = PADDLE_WIDTH; // Mittelgroßer Schläger
+                }
+                else if (item == "Big") {
+                    new_width = PADDLE_WIDTH * 1.5; // Großer Schläger
+    
+                }
+                // Setze die neue Breite des Schlägers und zentriere ihn horizontal
+                game_paddle->SetAABB(wxRect(
+                    paddle_pos.GetX() + paddle_pos.GetWidth() / 2 - new_width / 2,
+                    paddle_pos.GetY(),
+                    new_width,
+                    paddle_pos.GetHeight()
+                ));
+            } else if (title == "Brick_columns") {
+                std::cout << "brick columns";
+                if (item == "4") {
+                    build_bricks(4); // 4 Spalten
+                    std::cout << "4 c";
+                }
+                else if (item == "6") {
+                    build_bricks(6); // 6 Spalten
+                    std::cout << "6 c";
+                }
+                else if (item == "8") {
+                    build_bricks(8); // 8 Spalten
+                }
             }
         }
 
@@ -293,12 +377,36 @@ private:
 
             // Prüfe, ob der Ball den unteren Rand des Fensters erreicht hat
             if (ball_pos.GetBottom() >= WINDOW_HEIGHT) {
-                // TODO Logik für das Spielende oder das Zurücksetzen des Balls implementieren
+                gameOver(); // Spielende
             }
 
             refresh();
         }
 
+        void gameOver() {
+            // Zeige eine Nachricht an, dass das Spiel zu Ende ist
+            wxMessageBox("Game Over! Your final score was: " + std::to_string(score), "Game Over", wxOK | wxICON_INFORMATION);
+
+            // Setze den Punktestand zurück
+            score = 0;
+
+            // Setze den Ball und den Schläger auf die Ausgangsposition zurück
+            game_ball->SetAABB(wxRect(WINDOW_WIDTH / 2 - BALL_RADIUS, WINDOW_HEIGHT - 80, BALL_RADIUS * 2, BALL_RADIUS * 2));
+            game_paddle->SetAABB(wxRect(WINDOW_WIDTH / 2 - PADDLE_WIDTH / 2, WINDOW_HEIGHT - PADDLE_HEIGHT, PADDLE_WIDTH, PADDLE_HEIGHT));
+
+            // Setze die Ballgeschwindigkeit zurück
+            deltaX = speed;
+            deltaY = speed;
+
+            // Beginne ein neues Spiel
+            startNewGame();
+        }
+
+        void startNewGame() {
+            build_bricks(COLUMNS);
+            init_game_paddle();
+            refresh(); // Zeichne das Fenster neu, um das Spiel zurückzusetzen
+        }
 
         void on_paint(const ml5::paint_event& event) override {
             auto& ctx{ event.get_context() };
