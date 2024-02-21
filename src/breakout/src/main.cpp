@@ -295,6 +295,11 @@ private:
                 game_ball->move(wxPoint(0, 2 * deltaY)); // Korrigiere die Position, um zu verhindern, dass der Ball stecken bleibt
             }
 
+            // Prüfe ob alle Ziegel zerstört wurden
+            if (bricks.empty()) {
+                gameOver();
+            }
+
             // Prüfe Kollision mit den Ziegeln
             auto it = bricks.begin();
             while (it != bricks.end()) {
