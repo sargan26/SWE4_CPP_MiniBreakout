@@ -35,16 +35,16 @@ Die Implementierung baut auf einer klaren Klassenhierarchie auf, wobei `Shape` a
 
 ### **Testfälle**
 
-Ich denke, die Mindestanforderungen der Aufgabe wurden erfüllt. Zur besseren Darstellung der Funktionen habe ich ein Video auf Youtube hochgeladen:
+Zur besseren Darstellung der Funktionen habe ich ein Video auf Youtube hochgeladen.
 
-https://www.youtube.com/watch?v=IFiSJ-WxCOk
+## Video-Demonstration
+Ein [Video](https://www.youtube.com/watch?v=IFiSJ-WxCOk) auf Youtube zeigt die Testfälle in Aktion:
 
-0:00-0:15 Menü Konfigurationsparameter: Anzahl der Ziegel Zeilen
-0:15-0:35 Menü Konfigurationsparameter: Ball Geschwindigkeit
-0:35-1:05 Menü Konfigurationsparameter: Größe des Schlägers
-1:05-1:30 Austrittswinkel des Balls hängt vom Eintrittswinkel und der Position, an dem der Ball den Schläger berührt ab
-1:30-1:50 Bedienung des Schlägers auch mit der Tastatur möglich
-1:50- Leerlauf
-3:45-3:53 Spielende und neues Spiel durch alle Ziegel getroffen
-3:53-4:05 Spielende und neues Spiel durch Ballverlust
-
+- **0:00-0:15** Menü Konfigurationsparameter: Anzahl der Ziegel Zeilen
+- **0:15-0:35** Menü Konfigurationsparameter: Ball Geschwindigkeit
+- **0:35-1:05** Menü Konfigurationsparameter: Größe des Schlägers
+- **1:05-1:30** Austrittswinkel des Balls abhängig vom Eintrittswinkel und der Position am Schläger
+- **1:30-1:50** Bedienung des Schlägers auch mit der Tastatur möglich
+- **1:50-3:45** Leerlauf
+- **3:45-3:53** Spielende und neues Spiel durch alle Ziegel getroffen
+- **3:53-4:05** Spielende und neues Spiel durch Ballverlust
