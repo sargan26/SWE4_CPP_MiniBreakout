@@ -37,7 +37,7 @@ Die Implementierung baut auf einer klaren Klassenhierarchie auf, wobei `Shape` a
 
 Zur besseren Darstellung der Funktionen habe ich ein Video auf Youtube hochgeladen.
 
-## Video-Demonstration
+#### Video-Demonstration
 Ein [Video](https://www.youtube.com/watch?v=IFiSJ-WxCOk) auf Youtube zeigt die Testfälle in Aktion:
 
 - **0:00-0:15** Menü Konfigurationsparameter: Anzahl der Ziegel Zeilen
